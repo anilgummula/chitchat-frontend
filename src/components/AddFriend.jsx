@@ -66,7 +66,7 @@ const AddFriend = () => {
 
     return (
         <div className='bg-black text-white min-h-screen mt-12 p-4 '>  
-            <h2 className="text-cyan-300 flex justify-center m-8 mt-4">Search & send request for connection🤍</h2>  
+            <h2 className="text-teal-300  flex justify-center my-6 mx-2 mt-4 font-semibold">Search & send request for connection...🤍</h2>  
             <div className='flex justify-center pb-8 '>
                 <input 
                     className='border rounded-md text-white md:w-[340px] w-[240px] h-[30px] px-2 focus:outline-none' 
@@ -102,7 +102,7 @@ const AddFriend = () => {
                                 // onClick={() => navigate(`/product/${product._id}`)}
                             />
                             ))
-                        ) : ( <p className="text-center text-sky-300">Evaru leru bro ha peru tho...😞</p> )
+                        ) : ( <p className="text-center text-sky-300">Yevaru leru bro ah peeru tho...😞</p> )
                     }
                     </div>
                 ) 
