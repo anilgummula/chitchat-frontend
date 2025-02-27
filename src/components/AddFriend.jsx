@@ -65,7 +65,8 @@ const AddFriend = () => {
 
 
     return (
-        <div className='bg-black text-white min-h-screen mt-12 p-4 '>    
+        <div className='bg-black text-white min-h-screen mt-12 p-4 '>  
+            <h2 className="text-cyan-300 flex justify-center m-8 mt-4">Search & send request for connection🤍</h2>  
             <div className='flex justify-center pb-8 '>
                 <input 
                     className='border rounded-md text-white md:w-[340px] w-[240px] h-[30px] px-2 focus:outline-none' 
