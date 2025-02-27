@@ -12,7 +12,7 @@ const NetworkCard = (props) => {
 
   return (
     // <div className="max-w-full md:max-w-4xl w-full flex flex-col md:flex-row justify-between items-center border border-gray-200 rounded-lg p-4 sm:p-6 bg-white shadow-lg mx-auto mb-4">
-        <div className="flex flex-row items-center bg-white/10 p-2 mx-4 space-x-8 rounded-md">
+        <div className="flex flex-row items-center bg-white/10 p-2 md:mx-4 mx-2 md:space-x-8 space-x-4 rounded-md">
             {/* <p className="text-white">{userid}</p> */}
             {/* <div></div> */}
             <span className="border rounded-full bg-white w-12"><img src="/profile-picture.png" className="" alt="" /></span>
