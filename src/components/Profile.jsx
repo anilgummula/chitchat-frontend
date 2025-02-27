@@ -9,6 +9,7 @@ const Profile = () => {
     const {logout} = useContext(context);
     const usermail = localStorage.getItem('loggedInUser');
     const [userInfo,setUserInfo] = useState([])
+    const [loading,setLoading] = useState(true);
 
     useEffect(() => {
 
@@ -25,7 +26,8 @@ const Profile = () => {
                 const result = await response.json();
                 if(response.ok){
                     setUserInfo(result);
-                    console.log(result);
+                    setLoading(false);
+                    // console.log(result);
                 }
             } catch (error) {
                 handleError(error);
@@ -40,12 +42,23 @@ const Profile = () => {
     <div className='bg-black text-white min-h-screen flex flex-col mx-auto items-center space-y-6 mt-24'>
         {/* <p className='p-4 text-red-300'>Profile not found!</p> */}
         <div className='flex flex-col mx-auto justify-center text-center space-y-4'>
-            <img src="/profile-picture.png" className='flex mx-auto h-20 w-20' alt="" />
-            {/* <p>{usermail}</p> */}
-            <p>{userInfo.name}</p>
-            <p>{userInfo.email}</p>
-            <p>{userInfo.mobile}</p>
+
+        {
+            loading? (
+                <div className='flex justify-center m-20 text-green-300 '>
+                    looading loooading looooading!..😴
+                </div>
+            ) : (
+                <>
+                    <img src="/profile-picture.png" className='flex mx-auto h-20 w-20' alt="" />
+                    <p>{userInfo.name}</p>
+                    <p>{userInfo.email}</p>
+                    <p>{userInfo.mobile}</p>
+                </>
+            )
+        }
         </div>
+
         <Link to={'/'} onClick={()=>setTimeout(3000,logout())} className='text-yellow-300 border p-2 rounded-lg hover:cursor-pointer mt-12'>Logout</Link>
     </div>
   )

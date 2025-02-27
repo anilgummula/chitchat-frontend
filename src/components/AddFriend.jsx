@@ -82,7 +82,7 @@ const AddFriend = () => {
                 loading? (
                     <div className='flex flex-col mx-auto justify-center items-center p-4 '>
                         <p className='text-yellow-200'> 
-                        Loading ithundi wait cheyi bro.. !
+                        Loading ithundi wait cheyi bro..! 👀
                         </p>
                     </div>
 
@@ -101,7 +101,7 @@ const AddFriend = () => {
                                 // onClick={() => navigate(`/product/${product._id}`)}
                             />
                             ))
-                        ) : ( <p className="text-center text-gray-500">Evaru leru bayya a name tho...</p> )
+                        ) : ( <p className="text-center text-sky-300">Evaru leru bro ha peru tho...😞</p> )
                     }
                     </div>
                 ) 
