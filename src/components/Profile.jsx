@@ -37,7 +37,7 @@ const Profile = () => {
     
 
   return (
-    <div className='bg-black text-white min-h-screen flex flex-col mx-auto justify-center items-center p-4 space-y-10'>
+    <div className='bg-black text-white min-h-screen flex flex-col mx-auto items-center space-y-6 mt-24'>
         {/* <p className='p-4 text-red-300'>Profile not found!</p> */}
         <div className='flex flex-col mx-auto justify-center text-center space-y-4'>
             <img src="/profile-picture.png" className='flex mx-auto h-20 w-20' alt="" />
@@ -46,7 +46,7 @@ const Profile = () => {
             <p>{userInfo.email}</p>
             <p>{userInfo.mobile}</p>
         </div>
-        <Link to={'/'} onClick={()=>setTimeout(3000,logout())} className='text-yellow-300 border p-2 rounded-lg hover:cursor-pointer'>Logout</Link>
+        <Link to={'/'} onClick={()=>setTimeout(3000,logout())} className='text-yellow-300 border p-2 rounded-lg hover:cursor-pointer mt-12'>Logout</Link>
     </div>
   )
 }
