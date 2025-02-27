@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { handleError, handleSuccess } from '../utils';
 import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { context } from './Context';
 
 const Login = () => {
+    const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
+
+
+    const {setLoggedIn,setUser} = useContext(context);
     const [userInfo,setUserInfo] = useState({});
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
@@ -11,7 +17,7 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const handleSubmit = (e)=>{
+    const handleSubmit = async (e)=> {
         e.preventDefault();
         setButton(false);
 
@@ -21,11 +27,44 @@ const Login = () => {
             return;
         }
 
-        setUserInfo({ "email":email,"password": password });
-        handleSuccess('Logged In successfully');
-        setTimeout(() => {
-            navigate("/chat");
-        }, 1000);
+        try {
+            const url = `${API_BASE_URL}/auth/login`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const result = await response.json();
+            const { success, message, jwtToken, name,mobile, error } = result;
+            
+            // setLoading(false);
+            if (success) {
+                handleSuccess(message);
+                localStorage.setItem('token', jwtToken);
+                localStorage.setItem('loggedInUser', email);
+                
+                setLoggedIn(true);
+                setUserInfo({"name":name, "email":email,"mobile":mobile });
+                setUser(userInfo);
+
+                setTimeout(() => {
+                    navigate("/home");
+                }, 1000);
+                
+            } else if (error) {
+                const details = error?.details[0]?.message || 'An error occurred';
+                handleError(details);
+                setButton(true);
+            } else {
+                handleError(message);
+                setButton(true)
+            }
+        } catch (error) {
+            setButton(true);
+            handleError('An unexpected error occurred');
+        }
 
     }
 

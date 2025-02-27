@@ -21,15 +21,15 @@ const Context = ({children}) => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
         setLoggedIn(false);
-        setUser(false);
+        setUser([]);
         handleSuccess("Logged out");
-        window.location.href = "/";
+        // window.location.href = "/";
     }
 
   return (
 
 
-    <context.Provider value={{user,setUser,loggedIn,setLoggedIn}}>
+    <context.Provider value={{user,setUser,loggedIn,setLoggedIn,logout}}>
         {children}
     </context.Provider>
   )

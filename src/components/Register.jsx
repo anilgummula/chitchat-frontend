@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { handleError, handleSuccess } from '../utils';
+import { context } from './Context';
 
 const Register = () => {
+    const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
+
+    const {setUser,setLoggedIn}= useContext(context);
     const [userInfo,setUserInfo] = useState({});
     const [name,setName] = useState("");
     const [email,setEmail] = useState("");
@@ -12,7 +16,7 @@ const Register = () => {
     const [button,setButton] = useState(true);
     const navigate = useNavigate();
 
-    const handleSubmit = (e)=>{
+    const handleSubmit = async (e)=>{
         e.preventDefault();
         setButton(false);
 
@@ -21,20 +25,52 @@ const Register = () => {
             setButton(true);
             return 
         }
-        else{
-            setUserInfo(
-                {
-                    "name":name,
-                    "email":email,
-                    "mobile":mobile,
-                    "password":password
-                }
-            )
-            handleSuccess("Registeration success...!")
-            setTimeout(() => {
-                navigate("/chat");
-            }, 1000);
+        try {
+            const url = `${API_BASE_URL}/auth/register`;
+            const response = await fetch(url,{
+                method : "POST",
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({name,email,mobile,password})
+            });
+            const result = await response.json();
+            const {success ,message ,error,jwtToken } = result;
+            if(success){
+                localStorage.setItem('token', jwtToken);
+                localStorage.setItem('loggedInUser', email);
+                
+                setLoggedIn(true);
+                setUserInfo(
+                    {
+                        "name":name,
+                        "email":email,
+                        "mobile":mobile,
+                    }
+                )
+                setUser(userInfo);
+                
+                handleSuccess(message);
+
+                setTimeout(() => {
+                    navigate("/home")
+                }, 1000);
+            }
+            else if(error){
+                const details = error?.details[0].message;
+                handleError(details);
+                setButton(true);
+            }
+            else if(!success){
+                handleError(message);
+                setButton(true);
+            }
+            console.log(result);
+        } catch (err) {
+            handleError(err);
+            setButton(true);
         }
+          
 
     }
 

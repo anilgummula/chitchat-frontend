@@ -5,7 +5,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import Profile from './components/Profile'
 import AddFriend from './components/AddFriend'
-// import Home from './components/Home'
+import Home from './components/Home'
 
 
 import { ToastContainer } from 'react-toastify';
@@ -29,12 +29,13 @@ const App = () => {
                 <Register/>
             </>
         },
-        // {
-        //     path : "/home",
-        //     element : <>
-        //         <Home/>
-        //     </>
-        // },
+        {
+            path : "/home",
+            element : <>
+                <NavBar/>
+                <Home/>
+            </>
+        },
         {
             path : "/chat",
             element : <>
