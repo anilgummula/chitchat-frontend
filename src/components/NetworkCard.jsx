@@ -17,12 +17,12 @@ const NetworkCard = (props) => {
             {/* <div></div> */}
             <span className="border rounded-full bg-white w-12"><img src="/profile-picture.png" className="" alt="" /></span>
 
-            <p className="text-white pt-0 pb-2 flex flex-col text-sm">
+            <p className="text-white pt-0 pb-2 flex flex-col md:w-full text-sm">
                 <span>{name}</span>
                 <span>{email}</span>
             </p>
             <div className="flex mx-auto mr-0">
-                <button className="text-white text-sm p-1 border rounded-lg hover:bg-white/10">send request</button>
+                <button className="text-white text-sm p-1 border md:w-full w-20  rounded-lg hover:bg-white/10">send request</button>
             </div>
         </div>
     // </div>
