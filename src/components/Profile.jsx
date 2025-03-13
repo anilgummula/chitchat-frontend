@@ -7,27 +7,31 @@ const Profile = () => {
     const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
 
     const {logout} = useContext(context);
-    const usermail = localStorage.getItem('loggedInUser');
     const [userInfo,setUserInfo] = useState([])
     const [loading,setLoading] = useState(true);
-
+    
     useEffect(() => {
+        const usermail = localStorage.getItem('loggedInUser');
+        // console.log(usermail);
+        
 
         const fetchUser = async ()=>{
             try {
-                const response = await fetch(`${API_BASE_URL}/user/details`,{
-                    method : "POST",
-                    headers : {
-                        authorization : localStorage.getItem("token"),
+                const response = await fetch(`${API_BASE_URL}/user/details`, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        authorization: localStorage.getItem("token"),
                     },
-                    body:JSON.stringify({usermail})
+                    body: JSON.stringify({ usermail })  // Ensure usermail is properly sent
                 });
 
                 const result = await response.json();
                 if(response.ok){
+                    // console.log(userInfo);
                     setUserInfo(result);
                     setLoading(false);
-                    // console.log(result);
+                    // console.log("result: ",result);
                 }
             } catch (error) {
                 handleError(error);
