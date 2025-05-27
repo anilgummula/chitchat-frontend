@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { handleError, handleSuccess } from "../utils";
 import { useNavigate } from "react-router-dom";
 
-const NetworkCard = (props) => {
+const NotificationsCard = (props) => {
   const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
   const { email,name,userid,mobile,image } = props;
   const navigate = useNavigate();
@@ -12,21 +12,17 @@ const NetworkCard = (props) => {
   const handleclick = async (e)=>{
     e.preventDefault();
     const myid = localStorage.getItem('loggedInUserId')
-    const myemail = localStorage.getItem('loggedInUser')
-    const myname = localStorage.getItem('loggedInUserName')
-    console.log("myid:  ",myid);
-    
     try {
-        const result = await fetch(`${API_BASE_URL}/user/request`,{
+        const result = await fetch(`${API_BASE_URL}/user/react`,{
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
                 authorization: localStorage.getItem("token"),
             },
-            body: JSON.stringify({ rid : myid , id : userid,email:myemail,name:myname })
+            body: JSON.stringify({ myid:myid,rid:userid,email:email})
         })
         if(result.ok){
-            handleSuccess("request sent");
+            handleSuccess("connection build!");
         }
         else{
             handleError("not able to add");
@@ -35,7 +31,7 @@ const NetworkCard = (props) => {
         handleError(error);
     }
   }
-
+ 
 
 
 
@@ -51,11 +47,12 @@ const NetworkCard = (props) => {
                 <span>{email}</span>
             </p>
             <div className="flex mx-auto mr-0">
-                <button className="text-white text-sm p-1 border md:w-full w-20  rounded-lg hover:bg-white/10" onClick={(e)=>handleclick(e)}>send request</button>
+                <button className="text-white text-sm p-1 border border-green-300 md:w-full w-20  rounded-lg hover:bg-white/10" onClick={(e)=>handleclick(e)}>accept</button>
+                {/* <button className="text-white text-sm p-1 border border-red-300 md:w-full w-20  rounded-lg hover:bg-white/10" onClick={(e)=>handleclick(e)}>reject</button> */}
             </div>
         </div>
     // </div>
   );
 };
 
-export default NetworkCard;
+export default NotificationsCard;

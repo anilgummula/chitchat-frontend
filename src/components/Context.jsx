@@ -21,6 +21,7 @@ const Context = ({children}) => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
         localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("loggedInUserId");
         setLoggedIn(false);
         setUser([]);
         handleSuccess("Logged out");

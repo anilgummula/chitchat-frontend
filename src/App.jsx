@@ -12,6 +12,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Chat } from './components/Chat'
 import NavBar from './components/NavBar'
+import Notification from './components/Notification'
+import Messages from './components/Messages'
 
 const App = () => {
     const router = createBrowserRouter([
@@ -55,6 +57,20 @@ const App = () => {
             element : <>
                 <NavBar/>
                 <AddFriend/>
+            </>
+        },
+        {
+            path : "/notification",
+            element : <>
+                <NavBar/>
+                <Notification/>
+            </>
+        },
+        {
+            path : "/messages",
+            element : <>
+                <NavBar/>
+                <Messages/>
             </>
         },
     ])

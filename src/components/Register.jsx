@@ -33,12 +33,14 @@ const Register = () => {
                 body: JSON.stringify(formData),
             });
             const result = await response.json();
-            const { success, message, jwtToken, error } = result;
+            const { success, message, jwtToken,name, error,userid } = result;
 
             if (success) {
                 localStorage.setItem('token', jwtToken);
                 localStorage.setItem('loggedInUser', formData.email);
-                // localStorage.setItem('loggedInUser', email);
+                localStorage.setItem('loggedInUserId', userid);
+                localStorage.setItem('loggedInUserName', name);
+
                 console.log("user email: ",localStorage.getItem("loggedInUser"));
                 setLoggedIn(true);
                 setUser({ name: formData.name, email: formData.email, mobile: formData.mobile });

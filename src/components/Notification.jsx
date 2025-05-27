@@ -2,39 +2,47 @@ import React, { useContext, useEffect, useState } from 'react'
 import {context} from './Context';
 import { handleError } from '../utils';
 import NetworkCard from './NetworkCard';
+import NotificationsCard from './NotificationsCard';
 
 const image= '/profile-picture';
 
-const AddFriend = () => {
+const Notification = () => {
     const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
     // const {user} = useContext(context);
     // const name = user.name;
     // const email = user.email;
 
-    const [networks ,setNetworks] = useState([]);
+    const [notifications ,setNotifications] = useState([]);
     const [loading,setLoading] = useState(true);
     const [search,setSearch] = useState("");
-    const [filteredNetworks,setFilteredNetworks] = useState([])
+    const [filteredNotifications,setFilteredNotifications] = useState([])
 
 
 
     useEffect(() => {
-        const fetchNetworks = async ()=>{
+        const fetchNotifications = async ()=>{
             try {
-                const response = await fetch(`${API_BASE_URL}/user/networks`,{
+                const myid = localStorage.getItem('loggedInUserId');
+                console.log("myid123 :   ",myid);
+                
+                const response = await fetch(`${API_BASE_URL}/user/notifications`,{
+                    method:"POST",
                     headers : {
-                        authorization : localStorage.getItem("token"),
+                        'Content-Type': 'application/json',
+                        authorization : localStorage.getItem("token")
                     },
+                    
+                    body: JSON.stringify({ id : myid })
                 })
 
-                const data = await response.json();
+                const {data} = await response.json();
                 if(response.ok){
-                    const initial = data.filter((i)=>
-                        i.email!=localStorage.getItem('loggedInUser')
-                    )
-                    setNetworks(initial);
+                    // const initial = data.filter((i)=>
+                    //     i.email!=localStorage.getItem('loggedInUser')
+                    // )
+                    setNotifications(data);
                     setLoading(false);
-                    setFilteredNetworks(initial);
+                    setFilteredNotifications(data);
 
                     // handleSuccess("chats loaded...");
                     // console.log("networks:  ",data);
@@ -47,7 +55,7 @@ const AddFriend = () => {
             }
         }
 
-        fetchNetworks();
+        fetchNotifications();
     }, [])
 
     // const filteredNetworks = networks;
@@ -58,12 +66,12 @@ const AddFriend = () => {
         console.log(localStorage.getItem('loggedInUser'));
         
 
-        const filtered = networks.filter((network)=>
-            network.name.toLowerCase().includes(query) 
+        const filtered = notifications.filter((notifications)=>
+            notifications.name.toLowerCase().includes(query) 
 
         );
 
-        setFilteredNetworks(filtered);
+        setFilteredNotifications(filtered);
 
     }
 
@@ -72,7 +80,7 @@ const AddFriend = () => {
 
     return (
         <div className='bg-black text-white min-h-screen mt-12 p-4 '>  
-            <h2 className=" flex justify-center text-center mx-auto mt-4 mb-6 font-bold text-xl">Find & connection</h2>  
+            <h2 className=" flex justify-center text-center mx-auto mt-4 mb-6 font-bold text-xl">Requests</h2>  
             <div className='flex justify-center pb-8 '>
                 <input 
                     className='border rounded-md text-white md:w-[340px] w-[240px] h-[30px] px-2 focus:outline-none p-4' 
@@ -95,20 +103,20 @@ const AddFriend = () => {
 
                 ) : (
                     <div className="flex flex-col gap-4">
-                    {filteredNetworks.length > 0  ? 
+                    {filteredNotifications.length > 0  ? 
                         (
-                            filteredNetworks.map((network) => (
-                            <NetworkCard
-                                userid={network._id}
-                                key={network._id}
-                                name={network.name}
-                                email={network.email}
-                                mobile={network.mobile}
+                            filteredNotifications.map((notification) => (
+                            <NotificationsCard
+                                userid={notification.rid}
+                                key={notification._id}
+                                name={notification.name}
+                                email={notification.email}
+                                mobile={notification.mobile}
                                 image={image}
                                 // onClick={() => navigate(`/product/${product._id}`)}
                             />
                             ))
-                        ) : ( <p className="text-center text-sky-300">No one found...😞</p> )
+                        ) : ( <p className="text-center text-sky-300">No Notifications...😞</p> )
                     }
                     </div>
                 ) 
@@ -118,4 +126,4 @@ const AddFriend = () => {
     )
 }
 
-export default AddFriend;
+export default Notification;

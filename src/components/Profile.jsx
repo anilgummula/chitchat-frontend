@@ -50,7 +50,7 @@ const Profile = () => {
         {
             loading? (
                 <div className='flex justify-center m-20 text-green-300 '>
-                    looading loooading looooading!..😴
+                    Loooooooding!..😴
                 </div>
             ) : (
                 <>
@@ -63,7 +63,7 @@ const Profile = () => {
         }
         </div>
 
-        <Link to={'/'} onClick={()=>setTimeout(3000,logout())} className='text-yellow-300 border p-2 rounded-lg hover:cursor-pointer mt-12'>Logout</Link>
+        <Link to={'/'} onClick={()=>setTimeout(3000,logout())} className='text-yellow-300 border-2 font-semibold p-2 rounded-lg hover:cursor-pointer mt-12'>Logout</Link>
     </div>
   )
 }

@@ -35,12 +35,14 @@ const Login = () => {
             });
 
             const result = await response.json();
-            const { success, message, jwtToken, name, mobile, error } = result;
+            const { success, message, jwtToken, name, mobile, error,userid } = result;
 
             if (success) {
                 handleSuccess(message);
                 localStorage.setItem('token', jwtToken);
                 localStorage.setItem('loggedInUser', email);
+                localStorage.setItem('loggedInUserName', name);
+                localStorage.setItem('loggedInUserId', userid);
                 console.log("user email: ",localStorage.getItem("loggedInUser"));
                 
 
