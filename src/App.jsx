@@ -39,9 +39,9 @@ const App = () => {
             </>
         },
         {
-            path : "/chat",
+            path : "/chat/:id",
             element : <>
-                <NavBar/>
+                {/* <NavBar/> */}
                 <Chat/>
             </>
         },
@@ -68,6 +68,13 @@ const App = () => {
         },
         {
             path : "/messages",
+            element : <>
+                <NavBar/>
+                <Messages/>
+            </>
+        },
+        {
+            path : "/messages/chat/:id",
             element : <>
                 <NavBar/>
                 <Messages/>
