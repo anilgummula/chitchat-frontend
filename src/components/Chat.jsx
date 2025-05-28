@@ -101,7 +101,7 @@ const [receiverInfo, setReceiverInfo] = useState({ name: '', dp: '',email:'' });
     <div className="min-h-screen bg-black text-white flex flex-col">
         
           {/* Header */}
-            <div className="flex items-center justify-between bg-white/10 p-3 ">
+            <div className="flex items-center justify-between bg-white/10 p-3 mb-4 ">
             
             {/* Profile Section */}
             <div className="flex items-center space-x-4">
@@ -152,7 +152,7 @@ const [receiverInfo, setReceiverInfo] = useState({ name: '', dp: '',email:'' });
         </div>
       )}
 
-      <div className="p-4 border-t border-gray-700 flex items-center gap-2">
+      {/* <div className="p-4 border-t border-gray-700 flex items-center gap-2">
         <input
           type="text"
           placeholder="Type your message..."
@@ -175,7 +175,44 @@ const [receiverInfo, setReceiverInfo] = useState({ name: '', dp: '',email:'' });
         >
           Send
         </button>
-      </div>
+      </div> */}
+      <div className="p-3 border-t border-gray-700 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+  {/* Text Input */}
+  <input
+  type="text"
+  placeholder="Type your message..."
+  value={text}
+  onChange={(e) => setText(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); // prevent newline
+      handleSend();
+    }
+  }}
+  className="flex-1 p-2 rounded bg-gray-800 text-white w-full sm:w-auto"
+/>
+
+
+  {/* File Input */}
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      setImage(e.target.files[0]);
+      setPreviewImage(URL.createObjectURL(e.target.files[0]));
+    }}
+    className="text-white w-full sm:w-auto"
+  />
+
+  {/* Send Button */}
+  <button
+    onClick={handleSend}
+    className="bg-white text-black font-semibold px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto"
+  >
+    Send
+  </button>
+</div>
+
     </div>
   );
 };
