@@ -194,7 +194,7 @@ const [receiverInfo, setReceiverInfo] = useState({ name: '', dp: '',email:'' });
 
 
   {/* File Input */}
-  <input
+  {/* <input
     type="file"
     accept="image/*"
     onChange={(e) => {
@@ -202,7 +202,7 @@ const [receiverInfo, setReceiverInfo] = useState({ name: '', dp: '',email:'' });
       setPreviewImage(URL.createObjectURL(e.target.files[0]));
     }}
     className="text-white w-full sm:w-auto"
-  />
+  /> */}
 
   {/* Send Button */}
   <button
