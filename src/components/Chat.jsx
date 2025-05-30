@@ -63,9 +63,9 @@ const [receiverInfo, setReceiverInfo] = useState({ name: '', dp: '',email:'' });
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: localStorage.getItem('token'),
+          authorization: localStorage.getItem('token'),
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {

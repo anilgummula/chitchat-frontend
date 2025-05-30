@@ -21,10 +21,14 @@ const AddFriend = () => {
     useEffect(() => {
         const fetchNetworks = async ()=>{
             try {
+                const useremail = localStorage.getItem("loggedInUser");
                 const response = await fetch(`${API_BASE_URL}/user/networks`,{
-                    headers : {
-                        authorization : localStorage.getItem("token"),
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    authorization: localStorage.getItem('token'),
                     },
+                    body: JSON.stringify({email:useremail})
                 })
 
                 const data = await response.json();
