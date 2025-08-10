@@ -99,7 +99,7 @@ export const Chat = () => {
 
         if (response.ok) {
             const newMsg = await response.json();
-            setMessages(prev => [...prev, newMsg]);
+            // setMessages(prev => [...prev, newMsg]);
 
             setText('');
             setImage(null);
