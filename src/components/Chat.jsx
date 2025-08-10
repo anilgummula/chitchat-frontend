@@ -1,101 +1,120 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { io } from "socket.io-client";
 
 export const Chat = () => {
-  const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
-  const { id: receiverId } = useParams(); // Gets id from route
+    const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
+    const { id: receiverId } = useParams(); // Gets id from route
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-// const [receiverName, setReceiverName] = useState('');
-const [receiverInfo, setReceiverInfo] = useState({ name: '', dp: '',email:'' });
+    // const [receiverName, setReceiverName] = useState('');
+    const [receiverInfo, setReceiverInfo] = useState({ name: '', dp: '',email:'' });
 
-  const [messages, setMessages] = useState([]);
-  const [text, setText] = useState('');
-  const [image, setImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
-  const chatEndRef = useRef(null);
+    const [messages, setMessages] = useState([]);
+    const [text, setText] = useState('');
+    const [image, setImage] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
+    const chatEndRef = useRef(null);
 
+    const socket = useRef();
 
-  const fetchReceiverInfo = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/user/${receiverId}`, {
-    //  method:"POST",
-    headers : {
-        // 'Content-Type': 'application/json',
-        authorization : localStorage.getItem("token"),
-    },
-    // body: JSON.stringify({ email:useremail })
-      
-    });
-    const data = await response.json();
-    setReceiverInfo({ name: data.name || 'Unknown', dp: data.profilePic || '' ,email: data.email});
-  } catch (error) {
-    console.error('Error fetching receiver info:', error.message);
-  }
-};
+    useEffect(() => {
+        socket.current = io(API_BASE_URL);
+        const userId = localStorage.getItem("loggedInUserId"); // store this on login
+        socket.current.emit("addUser", userId);
+
+        socket.current.on("getMessage", (data) => {
+        setMessages(prev => [...prev, data]);
+        });
+
+        return () => {
+        socket.current.disconnect();
+        };
+    }, []);
 
 
-
-  const fetchMessages = async () => {
+    const fetchReceiverInfo = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/message/${receiverId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: localStorage.getItem('token'),
+        const response = await fetch(`${API_BASE_URL}/user/${receiverId}`, {
+        //  method:"POST",
+        headers : {
+            // 'Content-Type': 'application/json',
+            authorization : localStorage.getItem("token"),
         },
-      });
-      const data = await response.json();
-      setMessages(data);
+        // body: JSON.stringify({ email:useremail })
+        
+        });
+        const data = await response.json();
+        setReceiverInfo({ name: data.name || 'Unknown', dp: data.profilePic || '' ,email: data.email});
     } catch (error) {
-      console.error('Error fetching messages:', error.message);
+        console.error('Error fetching receiver info:', error.message);
     }
-  };
+    };
 
-  const handleSend = async () => {
-    try {
-      const payload = {
-        text,
-        image: image ? await toBase64(image) : null,
-      };
 
-      const response = await fetch(`${API_BASE_URL}/message/send/${receiverId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: localStorage.getItem('token'),
-        },
-        body: JSON.stringify(payload)
-      });
 
-      if (response.ok) {
-        const newMsg = await response.json();
-        setMessages(prev => [...prev, newMsg]);
-        setText('');
-        setImage(null);
-        setPreviewImage(null);
-      }
-    } catch (error) {
-      console.error('Error sending message:', error.message);
-    }
-  };
+    const fetchMessages = async () => {
+        try {
+        const response = await fetch(`${API_BASE_URL}/message/${receiverId}`, {
+            headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('token'),
+            },
+        });
+        const data = await response.json();
+        setMessages(data);
+        } catch (error) {
+        console.error('Error fetching messages:', error.message);
+        }
+    };
 
-  useEffect(() => {
-    fetchReceiverInfo();
-    fetchMessages();
-  }, [receiverId]);
+    const handleSend = async () => {
+        try {
+        const payload = {
+            text,
+            image: image ? await toBase64(image) : null,
+        };
 
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+        const response = await fetch(`${API_BASE_URL}/message/send/${receiverId}`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            authorization: localStorage.getItem('token'),
+            },
+            body: JSON.stringify(payload)
+        });
 
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
+        if (response.ok) {
+            const newMsg = await response.json();
+            setMessages(prev => [...prev, newMsg]);
+            setText('');
+            setImage(null);
+            setPreviewImage(null);
+        }
+        } catch (error) {
+        console.error('Error sending message:', error.message);
+        }
+    };
+
+
+
+    useEffect(() => {
+        fetchReceiverInfo();
+        fetchMessages();
+    }, [receiverId]);
+
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
+    const toBase64 = (file) =>
+        new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        });
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
