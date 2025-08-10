@@ -25,7 +25,19 @@ export const Chat = () => {
         socket.current.emit("addUser", userId);
 
         socket.current.on("getMessage", (data) => {
-        setMessages(prev => [...prev, data]);
+            setMessages(prev => {
+                if (
+                prev.some(
+                    m =>
+                    m.text === data.text &&
+                    m.image === data.image &&
+                    new Date(m.createdAt).getTime() === new Date(data.createdAt).getTime()
+                )
+                ) {
+                return prev; // already exists
+                }
+                return [...prev, data];
+            });
         });
 
         return () => {
@@ -88,6 +100,7 @@ export const Chat = () => {
         if (response.ok) {
             const newMsg = await response.json();
             setMessages(prev => [...prev, newMsg]);
+
             setText('');
             setImage(null);
             setPreviewImage(null);
